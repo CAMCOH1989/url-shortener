@@ -1,6 +1,7 @@
 import json
 from http import HTTPStatus
 
+import asyncpg
 from aiohttp import web
 
 
@@ -19,7 +20,13 @@ async def create_url_handler(request: web.Request):
 
 
 async def get_urls_handler(request: web.Request):
-    return web.json_response(data=[URL_DATA])
+    async with request.app['postgres'].acquire() as conn:
+        async with conn.transaction():
+            # Run the query passing the request argument.
+            result = await conn.fetchval('select 2 ^ $1', 5)
+            return web.json_response(data={
+                'example': result
+            })
 
 
 async def get_url_handler(request: web.Request):
@@ -30,8 +37,13 @@ async def delete_url_handler(request: web.Request):
     return web.Response(status=HTTPStatus.NO_CONTENT)
 
 
+async def setup_db(app: web.Application):
+    app['postgres'] = await asyncpg.create_pool('postgresql://api:hackme@0.0.0.0:5452/url_shortener')
+
+
 def main():
     app = web.Application()
+    app.on_startup.append(setup_db)
     app.add_routes([web.post('/urls', create_url_handler),
                     web.get('/urls', get_urls_handler),
                     web.get('/urls/{id}', get_url_handler),
