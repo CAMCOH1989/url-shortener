@@ -22,7 +22,6 @@ async def create_url_handler(request: web.Request):
 async def get_urls_handler(request: web.Request):
     async with request.app['postgres'].acquire() as conn:
         async with conn.transaction():
-            # Run the query passing the request argument.
             result = await conn.fetchval('select 2 ^ $1', 5)
             return web.json_response(data={
                 'example': result
