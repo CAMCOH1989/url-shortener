@@ -2,10 +2,13 @@
 
 #createURL
 /urls
-    POST
-    GET
+	POST
+	GET
 
 /url/:id
-    GET
-    DELETE
+	GET
+	DELETE
+
+/redirect/:shortLink
+	GET
 
