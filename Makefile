@@ -32,3 +32,6 @@ upload: build
 
 test:
 	env/bin/tox
+
+initdb:
+	psql -h 0.0.0.0 -p 5452 -U api --dbname=url_shortener -f initdb.sql

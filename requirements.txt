@@ -1,4 +1,5 @@
 aiodns
 aiohttp
+aiohttp-validate
 cchardet
 asyncpg

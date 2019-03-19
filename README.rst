@@ -9,6 +9,6 @@
 	GET
 	DELETE
 
-/redirect/:shortLink
+/r/:shortLink
 	GET
 
