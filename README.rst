@@ -5,6 +5,7 @@ Url shortening & redirecting back to original.
 .. contents:: **Contents**
    :depth: 3
 
+
 Usage
 =====
 .. code-block:: shell
@@ -15,22 +16,98 @@ Usage
 
 
 
- #createURL
- /api/urls
-	 POST
-	 GET
+REST API methods
+================
+API
+----
 
- # Run HTTP API
- docker run -d --rm -p8080:8080 \
-     --env CHEKIST_AMQP_URL=amqp://guest:guest@${HOST}/ \
-     --env CHEKIST_PG_URL=postgresql://api:hackme@${HOST}:5432/chekist \
-     --volume ${HOST_DIR}:/files \
-     janeturueva/chekist
+Create new short URL.
+~~~~~~~~~~~~~~~~~~~~~
+.. code-block:: shell
 
-/api/url/:id
-	GET
-	DELETE
+    http POST 0.0.0.0:8080/api/urls url='https://ya.ru'
 
-/r/:shortLink
-	GET
+.. code-block:: json
 
+    {
+        "data": {
+        "created_at": "2019-03-20T13:10:24.909897+00:00",
+        "short_url": "0.0.0.0:8080/r/ACc=",
+        "url": "https://ya.ru",
+        "url_id": 13,
+        "visited_at": null
+        }
+    }
+
+Get all URLs from database.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. code-block:: shell
+
+    http 0.0.0.0:8080/api/urls
+
+.. code-block:: json
+
+    {
+        "data": [
+            {
+            "created_at": "2019-03-20T12:52:44.314142+00:00",
+            "short_url": "0.0.0.0:8080/r/ACY=",
+            "url": "https://raw.githubusercontent.com/JaneTurueva/chekist/master/README.rst",
+            "url_id": 12,
+            "visited_at": null
+            },
+            {
+            "created_at": "2019-03-20T13:10:24.909897+00:00",
+            "short_url": "0.0.0.0:8080/r/ACc=",
+            "url": "https://ya.ru",
+            "url_id": 13,
+            "visited_at": null
+            }
+        ]
+    }
+
+Get one URL and short URL from database.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ .. code-block:: shell
+
+    HTTP POST 0.0.0.0:8080/api/urls/13
+
+.. code-block:: json
+
+    {
+        "data": [
+            {
+            "created_at": "2019-03-20T13:10:24.909897+00:00",
+            "short_url": "0.0.0.0:8080/r/ACc=",
+            "url": "https://ya.ru",
+            "url_id": 13,
+            "visited_at": null
+            }
+        ]
+    }
+
+Delete URL from database.
+~~~~~~~~~~~~~~~~~~~~~~~~~
+.. code-block:: shell
+
+    HTTP POST 0.0.0.0:8080/api/urls/13
+
+.. code-block:: http
+
+   HTTP/1.1 204 No Content
+
+
+Redirect
+--------
+Make a redirect.
+~~~~~~~~~~~~~~~~
+.. code-block:: shell
+
+    HTTP POST 0.0.0.0:8080/r/:shortLink
+
+.. code-block:: http
+
+   HTTP/1.1 302 Found
+
+
+#TODO Make an auto cleaning.

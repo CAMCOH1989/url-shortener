@@ -11,15 +11,9 @@ from asyncpg.protocol.protocol import Record
 from url_shortener.payload import convert
 from url_shortener.utils import encode, decode
 
-URL_DATA = {
-    'short_url': 'http://goo.gl/hdyHd',
-    'original_url': 'http://gogle.com/...',
-    'created_at': '..',
-    'url_id': '...'
-}
-
-
-def make_row_response(row: Record, base_url) -> dict:
+#TODO Add base_url.
+def make_row_response(row: Record) -> dict:
+    base_url = "0.0.0.0:8080/r/"
     return{
         'url_id': row['url_id'],
         'short_url': base_url + encode(row['url_id']),
@@ -79,6 +73,7 @@ async def delete_url_handler(request: web.Request):
         return web.Response(status=HTTPStatus.NO_CONTENT)
 
 
+#TODO Make data of the last visit insertion.
 async def get_redirect_handler(request: web.Request):
     url_id = decode(request.match_info.get("encoded_url_id"))
     async with request.app['postgres'].acquire() as conn:
@@ -94,7 +89,7 @@ async def get_redirect_handler(request: web.Request):
 async def setup_db(app: web.Application):
     app['postgres'] = await asyncpg.create_pool('postgresql://api:hackme@0.0.0.0:5452/url_shortener')
 
-
+#TODO Add auto cleaning.
 def main():
     app = web.Application()
     app["base_url"]="http://0.0.0.0:8080"
