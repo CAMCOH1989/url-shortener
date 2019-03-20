@@ -109,5 +109,21 @@ Make a redirect.
 
    HTTP/1.1 302 Found
 
-
 #TODO Make an auto cleaning.
+
+Development
+===========
+
+.. code-block:: shell
+
+    # Install virtualenv & deps
+    make devenv
+
+    # Activate virtualenv
+    source env/bin/activate
+
+    # Run docker-compose environment
+    docker-compose up -d
+
+    # Run HTTP API
+    url-shortener-api
