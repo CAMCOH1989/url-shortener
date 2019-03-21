@@ -10,9 +10,20 @@ Usage
 =====
 .. code-block:: shell
 
- # Migrate db
- docker run -it --rm \
-        --env psql -h 0.0.0.0 -p 5452 -U api --dbname=url_shortener -f initdb.sql
+    # Download source
+    git clone git@github.com:CAMCOH1989/url-shortener.git
+
+    # Install virtualenv & deps
+    make devenv
+
+    # Activate virtualenv
+    source env/bin/activate
+
+    # Run docker-compose environment
+    docker-compose up -d
+
+    # Run HTTP API
+    url-shortener-api
 
 
 
@@ -68,9 +79,9 @@ Get all URLs from database.
 
 Get one URL and short URL from database.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- .. code-block:: shell
+.. code-block:: shell
 
-    HTTP POST 0.0.0.0:8080/api/urls/13
+    http POST 0.0.0.0:8080/api/urls/13
 
 .. code-block:: json
 
@@ -90,7 +101,7 @@ Delete URL from database.
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: shell
 
-    HTTP POST 0.0.0.0:8080/api/urls/13
+    http DELETE 0.0.0.0:8080/api/urls/13
 
 .. code-block:: http
 
@@ -103,7 +114,7 @@ Make a redirect.
 ~~~~~~~~~~~~~~~~
 .. code-block:: shell
 
-    HTTP POST 0.0.0.0:8080/r/:shortLink
+    http GET 0.0.0.0:8080/r/:shortLink
 
 .. code-block:: http
 
