@@ -13,6 +13,9 @@ Usage
     # Download source
     git clone git@github.com:CAMCOH1989/url-shortener.git
 
+    # Get to the working direction
+    cd url-shortener
+
     # Install virtualenv & deps
     make devenv
 
@@ -114,7 +117,7 @@ Make a redirect.
 ~~~~~~~~~~~~~~~~
 .. code-block:: shell
 
-    http GET 0.0.0.0:8080/r/:shortLink
+    http GET 0.0.0.0:8080/r/ACc=
 
 .. code-block:: http
 
