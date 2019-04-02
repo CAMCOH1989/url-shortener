@@ -1,8 +1,5 @@
 FROM python:3
 
-# Install dlib
-RUN apt-get update && apt-get -y install cmake libdlib-dev
-
 # Create virtualenv
 RUN pip3 install virtualenv
 RUN virtualenv -p python3.7 /usr/share/python3/app
